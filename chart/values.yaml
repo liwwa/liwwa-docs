@@ -1,0 +1,24 @@
+replicaCount: 1
+
+image:
+  name: liwwadocs
+  repo: registry.digitalocean.com/liwwacr
+  pullSecret: liwwacr
+  version: ''
+
+probes:
+  enabled: false
+
+ingress:
+  enabled: true
+  annotations:
+    cert-manager.io/cluster-issuer: "liwwatls"
+    kubernetes.io/ingress.class: "nginx"
+    # nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    # nginx.ingress.kubernetes.io/rewrite-target: /$2
+    # kubernetes.io/tls-acme: "true"
+  tlsSecret: "liwwatls-docs"
+
+
+
+
