@@ -1,4 +1,4 @@
-FROM ruby:2.6-slim
+FROM ruby:2.6-slim AS build
 
 WORKDIR /srv/slate
 
@@ -22,5 +22,10 @@ COPY . /srv/slate
 
 RUN chmod +x /srv/slate/slate.sh
 
-ENTRYPOINT ["/srv/slate/slate.sh"]
-CMD ["build"]
+RUN ["/srv/slate/slate.sh", "build"]
+
+FROM nginx:latest
+
+EXPOSE 80
+
+COPY --from=build /srv/slate/build /usr/share/nginx/html
