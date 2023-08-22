@@ -1,5 +1,5 @@
 ---
-title: liwwa Partners API v0.0.1
+title: liwwa Partners API v1.0.0
 language_tabs:
   - python: Python
   - javascript: Javascript
@@ -16,7 +16,8 @@ headingLevel: 2
 
 ---
 
-<h1 id="liwwa-partnership-api">liwwa Partners API v0.0.1</h1>
+
+<h1 id="liwwa-partnership-api">liwwa Partners API v1.0.0</h1>
 
 The liwwa Partners API allows for partners to integrate embedded finance solutions into their platforms. With the click of a button, the clients of a partner can submit a loan request via API, and liwwa will automatically assess the client’s transaction-level financial data to respond instantly with the client’s eligible loan amount and loan tenor. Basic data and documents for the client are also collected to facilitate the loan signing process. Further planned integrations will increasingly automate the loan lifecycle by covering loan disbursal, collections & monitoring via this API.
 
@@ -31,7 +32,8 @@ You can use any standard HTTPS client to access the web service. For simplicity 
 |JavaScript|[axios](https://github.com/axios/axios)|
 |Python|[requests](https://pypi.org/project/requests/)
 
-Email: support.partners@liwwa.com 
+Email: support.partners@liwwa.com
+
 Website: <a href="https://liwwa.com">liwwa</a>
 
 <h1 id="liwwa-partnership-api-authentication"> Authentication </h1>
@@ -473,13 +475,13 @@ This end point will create a user and an application in our internal system and 
 
 |Field Name|Type|Description|
 |---|---|---|
-|merchantId|string|Merchant ID in the vendor's system|
+|merchantId|string|Merchant ID in the partner's system|
 |userId|int|The user ID in liwwa's system|
 |applicationId|int|The application ID in liwwa's system|
 |decision|object|Represents the loan application decision|
 |loanAmount|float|The loan amount|
 |loanCurrency|string| The loan currency|
-|loanTenor|integer|The loan tenor|
+|loanTenor|integer|The loan tenor (in months)|
 |eligible|boolean|Represents if the merchant is eligible or not|
 
 **Response Statuses**
