@@ -16,8 +16,6 @@ headingLevel: 2
 
 ---
 
-<!-- Generator: Widdershins v4.0.1 -->
-
 <h1 id="liwwa-partnership-api">liwwa Partners API v0.0.1</h1>
 
 The liwwa Partners API allows for partners to integrate embedded finance solutions into their platforms. With the click of a button, the clients of a partner can submit a loan request via API, and liwwa will automatically assess the client’s transaction-level financial data to respond instantly with the client’s eligible loan amount and loan tenor. Basic data and documents for the client are also collected to facilitate the loan signing process. Further planned integrations will increasingly automate the loan lifecycle by covering loan disbursal, collections & monitoring via this API.
