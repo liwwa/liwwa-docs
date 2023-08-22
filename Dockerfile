@@ -23,3 +23,9 @@ COPY . /srv/slate
 RUN chmod +x /srv/slate/slate.sh
 
 RUN ["/srv/slate/slate.sh", "build"]
+
+FROM nginx:latest
+
+EXPOSE 80
+
+COPY --from=build /srv/slate/build /usr/share/nginx/html
