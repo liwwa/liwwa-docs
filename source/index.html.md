@@ -1,245 +1,496 @@
 ---
-title: API Reference
+title: liwwa Partners API v1.0.0
+language_tabs:
+  - python: Python
+  - javascript: Javascript
+  - json: JSON
+language_clients:
+  - python: ""
+  - javascript: ""
+  - json: ""
+toc_footers: []
+includes: []
+search: false
+highlight_theme: darkula
+headingLevel: 2
 
-language_tabs: # must be one of https://github.com/rouge-ruby/rouge/wiki/List-of-supported-languages-and-lexers
-  - shell
-  - ruby
-  - python
-  - javascript
-
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
-
-includes:
-  - errors
-
-search: true
-
-code_clipboard: true
-
-meta:
-  - name: description
-    content: Documentation for the Kittn API
 ---
 
-# Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+<h1 id="liwwa-partnership-api">liwwa Partners API v1.0.0</h1>
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+The liwwa Partners API allows for partners to integrate embedded finance solutions into their platforms. With the click of a button, the clients of a partner can submit a loan request via API, and liwwa will automatically assess the client’s transaction-level financial data to respond instantly with the client’s eligible loan amount and loan tenor. Basic data and documents for the client are also collected to facilitate the loan signing process. Further planned integrations will increasingly automate the loan lifecycle by covering loan disbursal, collections & monitoring via this API.
 
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
+All requests should use the appropriate liwwa Partners root API URL `https://api.liwwa.com/`
 
-# Authentication
+All API requests must be made over HTTPS; calls made over plain HTTP will fail. API requests without authentication will also fail - see the Authentication section for information on correctly authenticating calls to the liwwa Partners API.
 
-> To authorize, use this code:
+You can use any standard HTTPS client to access the web service. For simplicity and brevity we have provided code samples in this document in Javascript and Python. `axios` library is used for JavaScript samples and `requests` library is used for Python samples, but any http client library can be used.
 
-```ruby
-require 'kittn'
+|Language|Library For Examples|
+|---|---|
+|JavaScript|[axios](https://github.com/axios/axios)|
+|Python|[requests](https://pypi.org/project/requests/)
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+Email: support.partners@liwwa.com
+
+Website: <a href="https://liwwa.com">liwwa</a>
+
+<h1 id="liwwa-partnership-api-authentication"> Authentication </h1>
+
+> Example
 
 ```python
-import kittn
+import requests
+headers = {
+  'Authorization': 'Token YOUR_API_KEY'
+}
 
-api = kittn.authorize('meowmeowmeow')
-```
+r = requests.post('https://api.liwwa.com/v1/borrow/submit-loan',json = {}, headers = headers)
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here" \
-  -H "Authorization: meowmeowmeow"
+print(r.json())
+
 ```
 
 ```javascript
-const kittn = require('kittn');
+const axios = require('axios');
 
-let api = kittn.authorize('meowmeowmeow');
+const headers = {
+  'Authorization': 'Token YOUR_API_KEY'
+};
+
+const data = {};
+
+axios.post('https://api.liwwa.com/v1/borrow/submit-loan', data, { headers })
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+The liwwa Partners API uses API keys to authenticate requests. These API keys can be generated only by liwwa's tech team, so please contact liwwa at support.partners@liwwa.com to generate one for you.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+Your API keys can be used to transfer sensitive client data and submit a loan request so please ensure you follow best practice for managing API keys.
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+We suggest that you:
 
-`Authorization: meowmeowmeow`
+- Keep the keys secure - do not share API keys or give them to parties outside your organization
+- Never, ever store your API keys in publicly-accessible locations - public github repositories, client-side code, documentation files and so on
 
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
+When making requests to the liwwa Partners API provide your API key in the Authorization header on the API request, e.g.
 
-# Kittens
+`Token YOUR_API_KEY`
 
-## Get All Kittens
+The code examples illustrate this.
 
-```ruby
-require 'kittn'
+<h1 id="liwwa-partnership-api-errors">Errors</h1>
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
+> Error Example
 
 ```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens" \
-  -H "Authorization: meowmeowmeow"
+{
+    "error": {
+        "code": "001",
+        "description": "merchantId is required field"
+    }
+}
 ```
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+{
+    "error": {
+        "code": "001",
+        "description": "merchantId is required field"
+    }
+}
 ```
-
-> The above command returns JSON structured like this:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
+{
+    "error": {
+        "code": "001",
+        "description": "merchantId is required field"
+    }
+}
+```
+We use standard HTTP status codes to indicate the success or failure of a request to our API.
+
+Successful requests to our API will have a 201 HTTP status code, and the response body.
+
+Unsuccessful requests to our API will have a non-201 HTTP status code and will contain an errors object with a description of the unsuccessful request.
+
+For successful requests you find an example of the response in each section below.
+
+### Error Object
+
+|Field name|Description|
+|---|---|
+|code| It is an internal code that represents the type of error as listed below|
+|description|The description of the error|
+
+### Definition of Errors
+
+|Code|HTTP Status|Description|
+|---|---|---|
+|001|400|Required field|
+|002|400|Field type did not match the required type|
+|003|400|Invalid phone number|
+|004|400|Invalid date format|
+|005|400|Invalid date value|
+|006|400|Invalid currency format|
+|007|400|Field should not be empty|
+|008|400|Invalid number of characters|
+|009|400|Only digits are allowed|
+|010|400|Invalid company type|
+|011|400|Unsupported country code|
+|100|401|Unauthorized API key|
+|200|404|Endpoint not found|
+|300|405|The method is not allowed for the requested URL|
+|400|500|Internal server error|
+
+<h1 id="liwwa-partnership-api-endpoints">API Endpoints</h1>
+
+The current list of available API endpoints on the liwwa Partners API is shown below.
+
+|ENDPOINT|Description|
+|---|---|
+|[`POST /v1/borrow/submit-loan`](#liwwa-partnership-api-loan-submit)|Submit Application Request
+
+<h1 id="liwwa-partnership-api-loan-submit">Submit Application Request</h1>
+
+<a id="opIdsubmitLoan"></a>
+
+> Code samples
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Token YOUR_API_KEY'
+}
+data = {
+  "merchantInfo": {
+    "merchantId": "3090597608",
+    "firstName": "Gaynor",
+    "secondName": "Justen",
+    "thirdName": "Zelig",
+    "lastName": "Frame",
+    "country": "jo",
+    "nationalIdNumber": "1721929525",
+    "phoneNumber": "+812593625487",
+    "email": "zframe0@domainmarket.com"
   },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+  "transactions": [
+    {
+      "date": "2022-07-30",
+      "amount": 900.0,
+      "currency": "JOD",
+      "transactionId": "1JSKA",
+      "description": "",
+    },
+    {
+      "date": "2022-08-30",
+      "amount": 1200.0,
+      "currency": "JOD",
+      "transactionId": "5JDKZ",
+      "description": "",
+    }
+  ],
+  "businessInfo": {
+    "businessId": "395350356",
+    "establishmentDate": "2022-08-07",
+    "merchantCategoryCode": "5600",
+    "businessName": "Liwwa",
+    "businessCommercialRegistrationNumber": "1234567890"
   }
-]
-```
+}
+r = requests.post('https://api.liwwa.com/v1/borrow/submit-loan',json = data, headers = headers)
 
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2" \
-  -H "Authorization: meowmeowmeow"
+print(r.json())
 ```
 
 ```javascript
-const kittn = require('kittn');
+const axios = require('axios');
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+const headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Token YOUR_API_KEY'
+};
+
+const data = {
+  "merchantInfo": {
+    "merchantId": "3090597608",
+    "firstName": "Gaynor",
+    "secondName": "Justen",
+    "thirdName": "Zelig",
+    "lastName": "Frame",
+    "country": "jo",
+    "nationalIdNumber": "1721929525",
+    "phoneNumber": "+812593625487",
+    "email": "zframe0@domainmarket.com"
+  },
+  "transactions": [
+    {
+      "date": "2022-07-30",
+      "amount": 900.0,
+      "currency": "JOD",
+      "transactionId": "1JSKA",
+      "description": "",
+    },
+    {
+      "date": "2022-08-30",
+      "amount": 1200.0,
+      "currency": "JOD",
+      "transactionId": "5JDKZ",
+      "description": "",
+    }
+  ],
+  "businessInfo": {
+    "businessId": "395350356",
+    "establishmentDate": "2022-08-07",
+    "merchantCategoryCode": "5600",
+    "businessName": "Liwwa",
+    "businessCommercialRegistrationNumber": "1234567890"
+  }
+};
+
+axios.post('https://api.liwwa.com/v1/borrow/submit-loan', data, { headers })
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 ```
 
-> The above command returns JSON structured like this:
+### POST /v1/borrow/submit-loan
 
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
+This end point will create a user and an application in our internal system and will return the loan amount and loan tenor that the customer is eligible to take from liwwa with the application id and user id as references.
 
-This endpoint retrieves a specific kitten.
+### JSON POST PARAMETERS
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+|Field Name|Type|Required|Description|
+|---|---|---|---|
+|merchantInfo|object|true|Object that represents the merchant information|
+|transactions|list|true|List of transaction objects|
+|businessInfo|object|true|Object that represents the business information|
 
-### HTTP Request
+### Merchant
 
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
+> Merchant Info Example
 
 ```python
-import kittn
+{
+    "merchantId": "3090597608",
+    "firstName": "Gaynor",
+    "secondName": "Justen",
+    "thirdName": "Zelig",
+    "lastName": "Frame",
+    "country": "jo",
+    "nationalIdNumber": "1721929525",
+    "phoneNumber": "+812593625487",
+    "email": "zframe0@domainmarket.com"
+}
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2" \
-  -X DELETE \
-  -H "Authorization: meowmeowmeow"
 ```
 
 ```javascript
-const kittn = require('kittn');
+{
+  "merchantId": "3090597608",
+  "firstName": "Gaynor",
+  "secondName": "Justen",
+  "thirdName": "Zelig",
+  "lastName": "Frame",
+  "country": "jo",
+  "nationalIdNumber": "1721929525",
+  "phoneNumber": "+812593625487",
+  "email": "zframe0@domainmarket.com"
+}
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
 ```
-
-> The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+  "merchantId": "3090597608",
+  "firstName": "Gaynor",
+  "secondName": "Justen",
+  "thirdName": "Zelig",
+  "lastName": "Frame",
+  "country": "jo",
+  "nationalIdNumber": "1721929525",
+  "phoneNumber": "+812593625487",
+  "email": "zframe0@domainmarket.com"
+}
+
+```
+
+|Field Name|Type|Required|Description|
+|---|---|---|---|
+|merchantId|string|true|Merchant ID in the vendor system|
+|firstName|string|true|Merchant first name|
+|secondName|string|false|Merchant second name|
+|thirdName|string|false|Merchant third name|
+|lastName|string|true|Merchant last name|
+|country|string|true|Residency country (jo, eg)|
+|nationalIdNumber|string|true|Merchant national id number|
+|phoneNumber|string|true|Phone number based on the E.164|
+|email|string|false|Merchant email|
+
+### Transaction
+
+> Transaction Example
+
+```python
+{
+    "date": "2022-07-30",
+    "amount": 900.0,
+    "currency": "JOD",
+    "transactionId": "1JSKA",
+    "description": "",
+}
+
+```
+
+```javascript
+{
+    "date": "2022-07-30",
+    "amount": 900.0,
+    "currency": "JOD",
+    "transactionId": "1JSKA",
+    "description": "",
+}
+
+```
+
+```json
+{
+    "date": "2022-07-30",
+    "amount": 900.0,
+    "currency": "JOD",
+    "transactionId": "1JSKA",
+    "description": "",
+}
+
+```
+
+|Field Name|Type|Required|Description|
+|---|---|---|---|
+|date|string|true|The date of the transaction using ISO 8601 format (YYYY-MM-DD)|
+|amount|float|true|The transaction amount (use a "-" to indicate negative values, e.g. -100.00)|
+|currency|string|true|The transaction currency using ISO 4217 alphabetical code ("EGP", "JOD")|
+|transactionId|string|true|A unique id for each transaction|
+|description|string|false|The transaction description|
+
+### Business Information
+
+> BusnissInfo Example
+
+```python
+{
+  "businessId": "395350356",
+  "establishmentDate": "2022-08-07",
+  "merchantCategoryCode": "5600",
+  "businessName": "Liwwa",
+  "businessCommercialRegistrationNumber": "1234567890"
 }
 ```
 
-This endpoint deletes a specific kitten.
+```javascript
+{
+  "businessId": "395350356",
+  "establishmentDate": "2022-08-07",
+  "merchantCategoryCode": "5600",
+  "businessName": "Liwwa",
+  "businessCommercialRegistrationNumber": "1234567890"
+}
+```
 
-### HTTP Request
+```json
+{
+  "businessId": "395350356",
+  "establishmentDate": "2022-08-07",
+  "merchantCategoryCode": "5600",
+  "businessName": "Liwwa",
+  "businessCommercialRegistrationNumber": "1234567890"
+}
+```
 
-`DELETE http://example.com/kittens/<ID>`
+|Field Name|Type|Required|Description|
+|---|---|---|---|
+|businessId|string|true|The business national id (Jordan) or tax card number (Egypt)|
+|establishmentDate|string|true|The establishment date of the business using ISO 8601 format (YYYY-MM-DD)|
+|merchantCategoryCode|string|true|Merchant category code based on ISO 18245|
+|businessName|string|false|The business name|
+|businessCommercialRegistrationNumber|string|false| The business commercial registration number|
 
-### URL Parameters
+### Responses
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+<h6 id="loan-submit-response-object">Response object</h6>
 
+> 201 Response Example
+
+```python
+{
+    "decision": {
+        "loanAmount": 5000,
+        "loanCurrency": "JOD",
+        "loanTenor": 6,
+        "eligible": true
+    },
+    "merchantId": "583",
+    "userId": 673560,
+    "applicationId": 465260
+}
+```
+
+```javascript
+{
+    "decision": {
+        "loanAmount": 5000,
+        "loanCurrency": "JOD",
+        "loanTenor": 6,
+        "eligible": true
+    },
+    "merchantId": "583",
+    "userId": 673560,
+    "applicationId": 465260
+}
+```
+
+```json
+{
+    "decision": {
+        "loanAmount": 5000,
+        "loanCurrency": "JOD",
+        "loanTenor": 6,
+        "eligible": true
+    },
+    "merchantId": "583",
+    "userId": 673560,
+    "applicationId": 465260
+}
+```
+
+|Field Name|Type|Description|
+|---|---|---|
+|merchantId|string|Merchant ID in the partner's system|
+|userId|int|The user ID in liwwa's system|
+|applicationId|int|The application ID in liwwa's system|
+|decision|object|Represents the loan application decision|
+|loanAmount|float|The loan amount|
+|loanCurrency|string| The loan currency|
+|loanTenor|integer|The loan tenor (in months)|
+|eligible|boolean|Represents if the merchant is eligible or not|
+
+**Response Statuses**
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|201|Create|An object with the loan application decision|[Response Object](#loan-submit-response-object)
+|400|Bad request|An object with an error message|[Error Object](#error-object)
+|401|Unauthorized|An object with an error message|[Error Object](#error-object)
+|405|Not allowed method|An object with an error message|[Error Object](#error-object)
+|422|Unprocessable entity|An object with an error message|[Error Object](#error-object)
+|500|Internal server error|An object with an error message|[Error Object](#error-object)
