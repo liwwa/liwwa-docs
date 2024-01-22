@@ -145,6 +145,14 @@ For successful requests you find an example of the response in each section belo
 |009|400|Only digits are allowed|
 |010|400|Invalid company type|
 |011|400|Unsupported country code|
+|012|400|Unsupported file type|
+|013|400|Invalid URL formate|
+|014|400|Missing the path in the URL|
+|015|400|Unsupported document category code|
+|016|400|Unable to download the document from the provided url|
+|017|400|Unsupported business type|
+|018|400|Unsupported governorate|
+|019|400|Email is already used|
 |100|401|Unauthorized API key|
 |200|404|Endpoint not found|
 |300|405|The method is not allowed for the requested URL|
@@ -180,7 +188,8 @@ data = {
     "country": "jo",
     "nationalIdNumber": "1721929525",
     "phoneNumber": "+812593625487",
-    "email": "zframe0@domainmarket.com"
+    "email": "zframe0@domainmarket.com",
+    "dateOfRegistrationWithPartner": "2021-12-24"
   },
   "transactions": [
     {
@@ -200,11 +209,20 @@ data = {
   ],
   "businessInfo": {
     "businessId": "395350356",
+    "businessName": "Liwwa",
+    "businessType": "sole_proprietorship",
     "establishmentDate": "2022-08-07",
     "merchantCategoryCode": "5600",
-    "businessName": "Liwwa",
-    "businessCommercialRegistrationNumber": "1234567890"
-  }
+    "businessCommercialRegistrationNumber": "1234567890",
+    "governorate": "Cairo"
+  },
+  "documentsInfo": [
+    {
+      "documentLink": "https://liwwa-attachments-development.s3.us-east-1.amazonaws.com/T%2342418/attachments/large_Liwwa_English_Logo_6abcd9468b.png?",
+      "documentCategory": "personal_id",
+      "documentName": "liwwa.png"
+    }
+    ]
 }
 r = requests.post('https://api.liwwa.com/v1/borrow/submit-loan',json = data, headers = headers)
 
@@ -229,7 +247,8 @@ const data = {
     "country": "jo",
     "nationalIdNumber": "1721929525",
     "phoneNumber": "+812593625487",
-    "email": "zframe0@domainmarket.com"
+    "email": "zframe0@domainmarket.com",
+    "dateOfRegistrationWithPartner": "2021-12-24"
   },
   "transactions": [
     {
@@ -249,11 +268,20 @@ const data = {
   ],
   "businessInfo": {
     "businessId": "395350356",
+    "businessName": "Liwwa",
+    "businessType": "sole_proprietorship",
     "establishmentDate": "2022-08-07",
     "merchantCategoryCode": "5600",
-    "businessName": "Liwwa",
-    "businessCommercialRegistrationNumber": "1234567890"
-  }
+    "businessCommercialRegistrationNumber": "1234567890",
+    "governorate": "Cairo"
+  },
+  "documentsInfo": [
+    {
+      "documentLink": "https://liwwa-attachments-development.s3.us-east-1.amazonaws.com/T%2342418/attachments/large_Liwwa_English_Logo_6abcd9468b.png?",
+      "documentCategory": "personal_id",
+      "documentName": "liwwa.png"
+    }
+    ]
 };
 
 axios.post('https://api.liwwa.com/v1/borrow/submit-loan', data, { headers })
@@ -273,9 +301,10 @@ This end point will create a user and an application in our internal system and 
 
 |Field Name|Type|Required|Description|
 |---|---|---|---|
-|merchantInfo|object|true|Object that represents the merchant information|
-|transactions|list|true|List of transaction objects|
-|businessInfo|object|true|Object that represents the business information|
+|merchantInfo|object|true|Object that represents the [merchant information](#merchant)|
+|transactions|list|true|List of [transaction objects](#transaction)|
+|businessInfo|object|true|Object that represents the [business information](#business-information)|
+|documentsInfo|list|false|List of [document objects](#documents)|
 
 ### Merchant
 
@@ -291,7 +320,8 @@ This end point will create a user and an application in our internal system and 
     "country": "jo",
     "nationalIdNumber": "1721929525",
     "phoneNumber": "+812593625487",
-    "email": "zframe0@domainmarket.com"
+    "email": "zframe0@domainmarket.com",
+    "dateOfRegistrationWithPartner": "2021-12-24"
 }
 
 ```
@@ -306,7 +336,8 @@ This end point will create a user and an application in our internal system and 
   "country": "jo",
   "nationalIdNumber": "1721929525",
   "phoneNumber": "+812593625487",
-  "email": "zframe0@domainmarket.com"
+  "email": "zframe0@domainmarket.com",
+  "dateOfRegistrationWithPartner": "2021-12-24"
 }
 
 ```
@@ -321,7 +352,8 @@ This end point will create a user and an application in our internal system and 
   "country": "jo",
   "nationalIdNumber": "1721929525",
   "phoneNumber": "+812593625487",
-  "email": "zframe0@domainmarket.com"
+  "email": "zframe0@domainmarket.com",
+  "dateOfRegistrationWithPartner": "2021-12-24"
 }
 
 ```
@@ -337,6 +369,7 @@ This end point will create a user and an application in our internal system and 
 |nationalIdNumber|string|true|Merchant national id number|
 |phoneNumber|string|true|Phone number based on the E.164|
 |email|string|false|Merchant email|
+|dateOfRegistrationWithPartner|string|false|Date of registration by merchant with partner|
 
 ### Transaction
 
@@ -390,44 +423,166 @@ This end point will create a user and an application in our internal system and 
 ```python
 {
   "businessId": "395350356",
+  "businessName": "Liwwa",
+  "businessType": "sole_proprietorship",
   "establishmentDate": "2022-08-07",
   "merchantCategoryCode": "5600",
-  "businessName": "Liwwa",
-  "businessCommercialRegistrationNumber": "1234567890"
+  "businessCommercialRegistrationNumber": "1234567890",
+  "governorate": "Cairo"
 }
 ```
 
 ```javascript
 {
   "businessId": "395350356",
+  "businessName": "Liwwa",
+  "businessType": "sole_proprietorship",
   "establishmentDate": "2022-08-07",
   "merchantCategoryCode": "5600",
-  "businessName": "Liwwa",
-  "businessCommercialRegistrationNumber": "1234567890"
+  "businessCommercialRegistrationNumber": "1234567890",
+  "governorate": "Cairo"
 }
 ```
 
 ```json
 {
   "businessId": "395350356",
+  "businessName": "Liwwa",
+  "businessType": "sole_proprietorship",
   "establishmentDate": "2022-08-07",
   "merchantCategoryCode": "5600",
-  "businessName": "Liwwa",
-  "businessCommercialRegistrationNumber": "1234567890"
+  "businessCommercialRegistrationNumber": "1234567890",
+  "governorate": "Cairo"
 }
 ```
 
 |Field Name|Type|Required|Description|
 |---|---|---|---|
 |businessId|string|true|The business national id (Jordan) or tax card number (Egypt)|
-|establishmentDate|string|true|The establishment date of the business using ISO 8601 format (YYYY-MM-DD)|
-|merchantCategoryCode|string|true|Merchant category code based on ISO 18245|
-|businessName|string|false|The business name|
+|businessName|string|true|The business name|
+|businessType|string|true|The business type, the acceptable values are specified [below](#business-type)|
+|establishmentDate|string|false|The establishment date of the business using ISO 8601 format (YYYY-MM-DD)|
+|merchantCategoryCode|string|false|Merchant category code based on ISO 18245|
 |businessCommercialRegistrationNumber|string|false| The business commercial registration number|
+|governorate|string|false|The business governorate, the acceptable values are specified [below](#governorate)|
+
+<p id="business-type">The acceptable value for business types is outlined below:</p>
+
+|Value|Type|Description|
+|---|---|---|
+|sole_proprietorship|string|Sole Proprietorship business|
+|general_partnership|string|General Partnership business|
+|limited_partnership|string|Limited Partnership business|
+|limited_liability_company|string|Limited Liability Company|
+|public_shareholding_company|string|Public Shareholding Company|
+|private_shareholding_company|string|Private Shareholding Company|
+|non_profit|string|Nonprofit Organization|
+|free_zone|string|Free Zone business|
+|civil|string|Civil business|
+|arab_joint_company|string|Arab Joint Company|
+|private_joint_stock_company|string|Private Joint Stock Company|
+|one_person_company|string|One Person Company|
+
+<p id="governorate">The acceptable value for governorate for Egypt is outlined below:</p>
+
+|Value|Type|Arabic Name|
+|---|---|---|
+|Alexandria|string|الإسكندرية|
+|Aswan|string|أسوان|
+|Asyut|string|أسيوط|
+|Beheira|string|البحيرة|
+|Beni Suef|string|بني سويف|
+|Cairo|string|القاهرة|
+|Dakahlia|string|الدقهلية|
+|Damietta|string|دمياط|
+|Faiyum|string|الفيوم|
+|Gharbia|string|الغربية|
+|Giza|string|الجيزة|
+|Ismailia|string|الإسماعيلية|
+|Kafr El Sheikh|string|كفر الشيخ|
+|Luxor|string|الأقصر|
+|Matruh|string|مطروح|
+|Minya|string|المنيا|
+|Monufia|string|المنوفية|
+|New Valley|string|الوادي الجديد|
+|North Sinai|string|شمال سيناء|
+|Port Said|string|بورسعيد|
+|Qalyubia|string|القليوبية|
+|Qena|string|قنا|
+|Red Sea|string|البحر الأحمر|
+|Sharqia|string|الشرقية|
+|Sohag|string|سوهاج|
+|South Sinai|string|جنوب سيناء|
+|Suez|string|السويس|
+
+<p>The acceptable value for governorate for Jordan is outlined below:</p>
+
+|Value|Type|Arabic Name|
+|---|---|---|
+|Amman|string|عمان|
+|Balqa|string|البلقاء|
+|Ma'an|string|معان|
+|Mafraq|string|المفرق|
+|Madaba|string|مادبا|
+|Ajloun|string|عجلون|
+|Irbid|string|اربد|
+|Karak|string|الكرك|
+|Zarqa|string|الزرقاء|
+|Tafela|string|الطفيلة|
+|Jerash|string|جرش|
+|Aqaba|string|العقبة|
+
+<strong> Only English names are acceptable </strong>
+
+
+### Documents
+
+> DocumentsInfo Example
+
+```python
+{
+  "documentLink": "https://liwwa-attachments-development.s3.us-east-1.amazonaws.com/T%2342418/attachments/large_Liwwa_English_Logo_6abcd9468b.png?",
+  "documentCategory": "personal_id",
+  "documentName": "liwwa.png"
+}
+
+```
+
+```javascript
+{
+  "documentLink": "https://liwwa-attachments-development.s3.us-east-1.amazonaws.com/T%2342418/attachments/large_Liwwa_English_Logo_6abcd9468b.png?",
+  "documentCategory": "personal_id",
+  "documentName": "liwwa.png"
+}
+```
+
+```json
+{
+  "documentLink": "https://liwwa-attachments-development.s3.us-east-1.amazonaws.com/T%2342418/attachments/large_Liwwa_English_Logo_6abcd9468b.png?",
+  "documentCategory": "personal_id",
+  "documentName": "liwwa.png"
+}
+```
+
+|Field Name|Type|Required|Description|
+|---|---|---|---|
+|documentLink|string|true|The download link for the document, only pdf, png and jpeg documents are acceptable|
+|documentCategory|string|true|The document category, the acceptable values are specified [below](#document-category)|
+|documentName|string|false|The file name, if did not specified the last path in the document link will be used as name|
+
+<p id="document-category">The acceptable value for document category is outlined below:</p>
+
+|Value|Type|Description|
+|---|---|---|
+|personal_id|string|The personal ID|
+|commercial_certificate|string| The commercial certificate|
+|trading_license|string|the trading license|
+|tax_card|string|The tax card|
+|other|string| Any other documents|
 
 ### Responses
 
-<h6 id="loan-submit-response-object">Response object</h6>
+<p id="loan-submit-response-object">Response object</p>
 
 > 201 Response Example
 
